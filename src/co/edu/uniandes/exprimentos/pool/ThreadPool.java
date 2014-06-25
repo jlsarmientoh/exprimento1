@@ -17,8 +17,10 @@ public class ThreadPool implements PoolListener{
 		threads = new ArrayList<EventThread>();
 		availables = new ArrayList<Integer>();
 		
-		for(int i = 0; i < 100; i++){
-			threads.add(new EventThread(i));
+		for(int i = 0; i < 200; i++){
+			EventThread hilo = new EventThread(i);
+			hilo.attachListener(this);
+			threads.add(hilo);
 			availables.add(i);
 		}
 	}
@@ -28,7 +30,9 @@ public class ThreadPool implements PoolListener{
 		int newSize = previousSize * multiplicador;
 		
 		for(int i = previousSize; i < newSize; i++){
-			threads.add(new EventThread(i));
+			EventThread hilo = new EventThread(i);
+			hilo.attachListener(this);
+			threads.add(hilo);
 			availables.add(i);
 		}
 	}
@@ -48,17 +52,18 @@ public class ThreadPool implements PoolListener{
 	@Override
 	public synchronized void onThreadStart(int index) {
 		this.availables.remove(index);
+		this.threads.remove(index);
 	}
 
 	@Override
 	public synchronized void onThreadFinish(int index) {
-		this.availables.add(index);
+		//this.availables.add(index);
 		
 	}
 
 	@Override
 	public synchronized void onThreadCancel(int index) {
-		this.availables.add(index);
+		//this.availables.add(index);
 	}
 
 }

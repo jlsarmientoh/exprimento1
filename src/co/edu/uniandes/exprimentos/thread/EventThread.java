@@ -21,6 +21,9 @@ public class EventThread extends Thread {
 	@Override
 	public synchronized void start() {
 		super.start();
+	}
+	
+	public void run(){
 		this.available = false;
 		this.listener.onThreadStart(index);
 		/**
