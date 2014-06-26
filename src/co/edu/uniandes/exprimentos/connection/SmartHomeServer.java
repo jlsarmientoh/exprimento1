@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import co.edu.uniandes.exprimentos.output.SmartHomeLogger;
 import co.edu.uniandes.exprimentos.service.ProcesarSensorService;
 import co.edu.uniandes.exprimentos.service.SensorService;
 
@@ -19,6 +20,7 @@ public class SmartHomeServer {
 		try {
 			serverSocket = new ServerSocket(port);
 			service = new ProcesarSensorService();
+			SmartHomeLogger.putMessage("Servidor preparado en puerto: " + port);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

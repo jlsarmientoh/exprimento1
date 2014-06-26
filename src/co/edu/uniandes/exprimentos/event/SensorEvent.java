@@ -50,8 +50,10 @@ public class SensorEvent {
 	}
 	
 	public String toString(){
-		return String.format("idCasa: %s - sensor: %s - Tiempo inicio: %s - Tiempo fin: %s", 
-				this.house, this.sensor, new Date(this.startTime), new Date(this.finishTime));
+		/*return String.format("idCasa: %s-sensor: %s-Tiempo inicio: %s-Tiempo fin: %s-diferrencia: %s", 
+				this.house, this.sensor, new Date(this.startTime), new Date(this.finishTime), (this.finishTime - this.startTime));*/
+		return String.format("%s-%s-%s-%s-%s", 
+				this.house, this.sensor, new Date(this.startTime), new Date(this.finishTime), (this.finishTime - this.startTime));
 	}
 	
 }

@@ -1,23 +1,18 @@
 package co.edu.uniandes.exprimentos.thread;
 
 import co.edu.uniandes.exprimentos.event.SensorEvent;
-import co.edu.uniandes.exprimentos.output.SmartHomeLogger;
-import co.edu.uniandes.exprimentos.pool.listener.PoolListener;
+import co.edu.uniandes.exprimentos.rulesengine.Reglas;
 
 public class EventThread extends Thread {
 
-	private int index;
-	private PoolListener listener;
-	private final Object handler;
+	private final Reglas handler;
 	private SensorEvent event;
 	private boolean available;
 	
-	public EventThread(int index){
-		this.index = index;
+	public EventThread(){
 		available = true;
 		//Instanciar el handler, no cambia, es inmutable
-		handler = new Object(); //Cambiar por la implementaci—n del motor de reglas
-		
+		handler = new Reglas();
 	}
 	
 	@Override
@@ -27,18 +22,12 @@ public class EventThread extends Thread {
 	
 	public void run(){
 		this.available = false;
-		//this.listener.onThreadStart(index);
+		
 		/**
 		 * LLamo al motor de reglas y pasarle el evento
 		 */
-		//this.listener.onThreadFinish(index);
-		event.setFinishTime(System.currentTimeMillis());
-		SmartHomeLogger.putMessage(event.toString());
-		//System.out.println("Evento procesado:" + event.toString());
-	}
-	
-	public void attachListener(PoolListener listener){
-		this.listener = listener;
+		this.handler.procesarReglas(event);
+		
 	}
 	
 	public void setSensorEvent(SensorEvent e){

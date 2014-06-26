@@ -19,7 +19,7 @@ public class SmartHomeLogger {
 		log.setLevel(Level.INFO);
 		try {
 			Handler finelHanlder = new FileHandler("./smarthome.log");
-			finelHanlder.setFormatter(new java.util.logging.XMLFormatter());
+			finelHanlder.setFormatter(new SmartHomeFormatter());
 			log.addHandler(finelHanlder);
 		} catch (SecurityException e) {
 			e.printStackTrace();
