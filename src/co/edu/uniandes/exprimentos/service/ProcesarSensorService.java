@@ -12,14 +12,50 @@ public class ProcesarSensorService implements SensorService {
 	@Override
 	public boolean procesar(byte[] trama) {
 		if(trama != null && trama.length > 0){
-			//Esta parte puede cambiar
-			for(byte data : trama){
-				SensorEvent evento = new SensorEvent();
-				//Setear la data en el objeto SensorEvent
-				EventThread hilo = ThreadPoolSingleton.getInstance().getThread();
-				hilo.setSensorEvent(evento);
-				hilo.start();
+			long timeStamp = 0;
+			int idCasa = 0;
+			try{
+				timeStamp = (((long) trama[0]) & 0xFF)
+						+ ((((long) trama[1]) & 0xFF) << 8)
+						+ ((((long) trama[2]) & 0xFF) << 16)
+						+ ((((long) trama[3]) & 0xFF) << 24)
+						+ ((((long) trama[4]) & 0xFF) << 32)
+						+ ((((long) trama[5]) & 0xFF) << 40)
+						+ ((((long) trama[6]) & 0xFF) << 48)
+						+ ((((long) trama[7]) & 0xFF) << 56);
+				
+				idCasa = (((int) trama[8]) & 0xFF)
+							+ ((((int) trama[9]) & 0xFF) << 8);
+			
+				for (int i = 1, j = 10; i <= 50; i++, j += 2) {
+					
+						// Lee la informaci—n de cada sensor
+						int cambioEstado = trama[j];
+						int estado = trama[j + 1];
+						
+						//Setear la data en el objeto SensorEvent
+						SensorEvent evento = new SensorEvent();
+						evento.setStartTime(timeStamp);
+						evento.setHouse(idCasa);
+						evento.setSensor(i);
+						evento.setChanged(cambioEstado);
+						evento.setState(estado);
+						
+						EventThread hilo = ThreadPoolSingleton.getInstance().getThread();
+						hilo.setSensorEvent(evento);
+						hilo.start();
+						// El sensor cambio de estado. Hay que validar
+						System.out.println("Consumed: timeStamp("
+								+ timeStamp + ") idCasa(" + idCasa
+								+ ") idSensor(" + i + ") Estado("
+								+ trama[j + 1] + ")");
+					
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+				System.out.println("Trama no procesada{casa:" + idCasa + "-timesstamp:" + timeStamp + "}{" + trama + "}");
 			}
+			
 			return true;
 		}
 		return false;

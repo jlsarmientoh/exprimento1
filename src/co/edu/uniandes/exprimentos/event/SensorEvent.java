@@ -1,5 +1,7 @@
 package co.edu.uniandes.exprimentos.event;
 
+import java.util.Date;
+
 public class SensorEvent {
 
 	private long startTime;
@@ -47,5 +49,9 @@ public class SensorEvent {
 		this.state = state;
 	}
 	
+	public String toString(){
+		return String.format("idCasa: %s - sensor: %s - Tiempo inicio: %s - Tiempo fin: %s", 
+				this.house, this.sensor, new Date(this.startTime), new Date(this.finishTime));
+	}
 	
 }

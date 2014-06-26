@@ -16,6 +16,7 @@ public class EventThread extends Thread {
 		available = true;
 		//Instanciar el handler, no cambia, es inmutable
 		handler = new Object(); //Cambiar por la implementaci—n del motor de reglas
+		
 	}
 	
 	@Override
@@ -25,11 +26,13 @@ public class EventThread extends Thread {
 	
 	public void run(){
 		this.available = false;
-		this.listener.onThreadStart(index);
+		//this.listener.onThreadStart(index);
 		/**
 		 * LLamo al motor de reglas y pasarle el evento
 		 */
-		this.listener.onThreadFinish(index);
+		//this.listener.onThreadFinish(index);
+		event.setFinishTime(System.currentTimeMillis());
+		System.out.println("Evento procesado:" + event.toString());
 	}
 	
 	public void attachListener(PoolListener listener){

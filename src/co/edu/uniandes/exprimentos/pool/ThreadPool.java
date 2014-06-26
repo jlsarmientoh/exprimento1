@@ -23,6 +23,8 @@ public class ThreadPool implements PoolListener{
 			threads.add(hilo);
 			availables.add(i);
 		}
+		
+		System.out.println("Hilos creados:" + threads.size());
 	}
 	
 	private void increasePool(){
@@ -35,18 +37,26 @@ public class ThreadPool implements PoolListener{
 			threads.add(hilo);
 			availables.add(i);
 		}
+		
+		System.out.println("Hilos creados:" + newSize);
 	}
 	
 	
 	public synchronized EventThread getThread(){
 		
-		double hilosRestantes = availables.size() / threads.size();
-		
-		if(hilosRestantes < cotaMinima){
+		if(threads.size() < 40){
 			increasePool();
 		}
 		
-		return threads.get(availables.get(0));
+		/*double hilosRestantes = availables.size() / threads.size();
+		
+		if(hilosRestantes < cotaMinima){
+			increasePool();
+		}*/
+		
+		EventThread t = threads.get(0);
+		threads.remove(0);
+		return  t;
 	}
 
 	@Override
