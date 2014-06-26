@@ -1,6 +1,7 @@
 package co.edu.uniandes.exprimentos.thread;
 
 import co.edu.uniandes.exprimentos.event.SensorEvent;
+import co.edu.uniandes.exprimentos.output.SmartHomeLogger;
 import co.edu.uniandes.exprimentos.pool.listener.PoolListener;
 
 public class EventThread extends Thread {
@@ -32,7 +33,8 @@ public class EventThread extends Thread {
 		 */
 		//this.listener.onThreadFinish(index);
 		event.setFinishTime(System.currentTimeMillis());
-		System.out.println("Evento procesado:" + event.toString());
+		SmartHomeLogger.putMessage(event.toString());
+		//System.out.println("Evento procesado:" + event.toString());
 	}
 	
 	public void attachListener(PoolListener listener){

@@ -10,6 +10,7 @@ public class ThreadPool implements PoolListener{
 	
 	private final int multiplicador = 2;
 	private final double cotaMinima = 0.2;
+	private int poolSize = 200;
 	private List<EventThread> threads;
 	private List<Integer> availables;
 	
@@ -17,7 +18,7 @@ public class ThreadPool implements PoolListener{
 		threads = new ArrayList<EventThread>();
 		availables = new ArrayList<Integer>();
 		
-		for(int i = 0; i < 200; i++){
+		for(int i = 0; i < this.poolSize; i++){
 			EventThread hilo = new EventThread(i);
 			hilo.attachListener(this);
 			threads.add(hilo);
@@ -28,15 +29,20 @@ public class ThreadPool implements PoolListener{
 	}
 	
 	private void increasePool(){
-		int previousSize = threads.size();
-		int newSize = previousSize * multiplicador;
 		
-		for(int i = previousSize; i < newSize; i++){
+		int newSize = this.poolSize * multiplicador;
+		
+		//for(int i = previousSize; i < newSize; i++){
+		int i = 0;
+		while(threads.size() < newSize){
 			EventThread hilo = new EventThread(i);
 			hilo.attachListener(this);
 			threads.add(hilo);
 			availables.add(i);
+			i++;
 		}
+		
+		this.poolSize = newSize;
 		
 		System.out.println("Hilos creados:" + newSize);
 	}

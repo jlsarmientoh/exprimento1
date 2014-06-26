@@ -25,14 +25,19 @@ public class SmartHomeServer {
 	}
 	
 	public void initSocket(){
+		int i = 0;
 		while(true){
 			try {
 				Socket connectionSocket = serverSocket.accept();
 				BufferedReader in = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 				service.procesar(in.readLine().getBytes());
+				i++;
+				//connectionSocket.close();
 			} catch (IOException e) {
 				e.printStackTrace();
+				i++;
 			}
+			System.out.println("Tramas Recibidas: " + i);
 		}
 	}
 

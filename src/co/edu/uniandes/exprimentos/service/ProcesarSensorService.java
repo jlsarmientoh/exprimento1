@@ -1,10 +1,15 @@
 package co.edu.uniandes.exprimentos.service;
 
 import co.edu.uniandes.exprimentos.event.SensorEvent;
+import co.edu.uniandes.exprimentos.output.OutputThread;
 import co.edu.uniandes.exprimentos.pool.ThreadPoolSingleton;
 import co.edu.uniandes.exprimentos.thread.EventThread;
 
 public class ProcesarSensorService implements SensorService {
+	
+	public ProcesarSensorService(){
+		ThreadPoolSingleton.getInstance();
+	}
 
 	/**
 	 * 
@@ -45,15 +50,14 @@ public class ProcesarSensorService implements SensorService {
 						hilo.setSensorEvent(evento);
 						hilo.start();
 						// El sensor cambio de estado. Hay que validar
-						System.out.println("Consumed: timeStamp("
+						/*System.out.println("Consumed: timeStamp("
 								+ timeStamp + ") idCasa(" + idCasa
 								+ ") idSensor(" + i + ") Estado("
-								+ trama[j + 1] + ")");
+								+ trama[j + 1] + ")");*/
 					
 				}
 			}catch(Exception e){
-				e.printStackTrace();
-				System.out.println("Trama no procesada{casa:" + idCasa + "-timesstamp:" + timeStamp + "}{" + trama + "}");
+				System.out.println("Trama no procesada{casa:" + idCasa + "-timesstamp:" + timeStamp + "}{" + trama + "}{"+ e.getMessage() +"}");
 			}
 			
 			return true;
