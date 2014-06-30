@@ -32,10 +32,34 @@ public class ProcesarSensorService implements SensorService {
 				idCasa = (((int) trama[8]) & 0xFF)
 							+ ((((int) trama[9]) & 0xFF) << 8);
 			
-				for (int i = 1, j = 10; i <= 50; i++, j += 2) {
+				for (int i = 10; i <= 20 ; i++) {
+					
+						for(int j = 1, k = 1; j <= 4; j++, k*=2){
+							
+							//if((trama[i] & k) == k){
+								int cambioEstado = 0;
+								if((trama[i] & k) == k){
+									cambioEstado = 1;
+								}
+								int estado = ((trama[i] >> (j+3)) & 0x01);
+								int sensor = (((i-10) * 4 ) +j );
+								
+								//Setear la data en el objeto SensorEvent
+								SensorEvent evento = new SensorEvent();
+								evento.setStartTime(timeStamp);
+								evento.setHouse(idCasa);
+								evento.setSensor(i);
+								evento.setChanged(cambioEstado);
+								evento.setState(estado);
+								
+								EventThread hilo = ThreadPoolSingleton.getInstance().getThread();
+								hilo.setSensorEvent(evento);
+								hilo.start();
+							//}
+						}
 					
 						// Lee la informaci—n de cada sensor
-						int cambioEstado = trama[j];
+						/*int cambioEstado = trama[j];
 						int estado = trama[j + 1];
 						
 						//Setear la data en el objeto SensorEvent
@@ -48,7 +72,7 @@ public class ProcesarSensorService implements SensorService {
 						
 						EventThread hilo = ThreadPoolSingleton.getInstance().getThread();
 						hilo.setSensorEvent(evento);
-						hilo.start();
+						hilo.start();*/
 						// El sensor cambio de estado. Hay que validar
 						/*System.out.println("Consumed: timeStamp("
 								+ timeStamp + ") idCasa(" + idCasa
